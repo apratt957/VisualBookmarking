@@ -47,6 +47,10 @@ class Draggable extends React.Component {
     this.onStart(e);
     const ref = ReactDOM.findDOMNode(this.handle);
     const box = ref.getBoundingClientRect();
+
+    //this checks if the mouse is on the bottom right corner of the div
+    //and if it is it returns early so that the user can't drag the div
+    //from there and instead can properly use the css resize
     if (e.clientX > box.right - 40 && e.clientY > box.left - 40) {
       return;
     } else {
@@ -103,7 +107,6 @@ class Draggable extends React.Component {
           left: this.state.x,
           top: this.state.y,
           touchAction: "none",
-          // fontSize: "80px",
         }}
         ref={(div) => {
           this.handle = div;

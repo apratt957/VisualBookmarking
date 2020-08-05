@@ -9,10 +9,13 @@ function App() {
 
   const onDrop = (event) => {
     event.preventDefault();
-    console.dir(event.dataTransfer);
     const { offsetX, offsetY } = event.nativeEvent;
     let text = event.dataTransfer.getData("text/uri-list");
 
+    //check to see if data being dropped is a url and if it is
+    //go through the whole avoiding CORS rigamarole of taking the
+    //image from the html and creating a new image element from it
+    //NOTE-- there might be a better way to do this? But shit if i know
     if (text) {
       const im = getHTMLMarkup(event.dataTransfer);
       text = event.dataTransfer.getData("text/html");
