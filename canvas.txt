@@ -1,0 +1,54 @@
+const canvasRef = useRef(null);
+  const contextRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    canvas.width = window.innerWidth * 2;
+    canvas.height = window.innerHeight * 2;
+    canvas.style.width = `${window.innerWidth}px`;
+    canvas.style.height = `${window.innerHeight}px`;
+
+    const context = canvas.getContext("2d");
+    // context.scale(3, 3);
+    context.font = "35px Verdana";
+    context.lineCap = "round";
+    context.strokeStyle = "black";
+    context.lineWidth = 5;
+    contextRef.current = context;
+  }, []);
+
+  const onTextDrop = (event) => {
+    event.preventDefault();
+    const { offsetX, offsetY } = event.nativeEvent;
+    let text = event.dataTransfer.getData("text/uri-list");
+    if (text) {
+      const img = new Image();
+      img.src = text;
+      contextRef.current.drawImage(img, offsetX, offsetY);
+    } else {
+      text = event.dataTransfer.getData("text");
+      // let textWidth = contextRef.current.measureText(text).width;
+
+      contextRef.current.fillText(text, offsetX, offsetY);
+    }
+  };
+
+  const onDragEnter = (event) => {
+    event.stopPropagation();
+  };
+
+  const onDragOver = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+  };
+
+  return (
+    <div className="App">
+      <canvas
+        ref={canvasRef}
+        onDragEnter={onDragEnter}
+        onDragOver={onDragOver}
+        onDrop={(event) => onTextDrop(event)}
+      />
+    </div>
+  );
